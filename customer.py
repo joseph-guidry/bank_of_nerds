@@ -11,17 +11,48 @@ Description:  THis module contains the functions and class to operate the custom
 ================== =================================================
     FUNCTION                            DESCRIPTION
 ================== =================================================
-1.
-2.
-3.
-4.
 
 Examples: 
 
 """
+import abc
 
+class Customer(metaclass=abc.ABCMeta):
+    """ 
+    This is the customer interface
+    """
 
-class Customer():
+    @property
+    @abc.abstractmethod
+    def first_name(self):
+        return self._first_name
+
+    @first_name.setter
+    @abc.abstractmethod
+    def first_name(self, name):
+        self._first_name = name
+
+    @property
+    @abc.abstractmethod
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    @abc.abstractmethod
+    def last_name(self, name):
+        self._last_name = name
+
+    @property
+    @abc.abstractmethod
+    def age(self):
+        return self._age
+
+    @age.setter
+    @abc.abstractmethod
+    def age(self, age):
+        self._age = age
+
+class BankCustomer(Customer):
     """ 
     This is the customer interface
     """
@@ -41,12 +72,20 @@ class Customer():
                self.age == customer.age
     
     @property
-    def name(self):
-        return self._name
+    def first_name(self):
+        return self._first_name
 
-    @name.setter
-    def name(self, name):
-        self._name = name
+    @first_name.setter
+    def first_name(self, name):
+        self._first_name = name
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, name):
+        self._last_name = name
 
     @property
     def age(self):

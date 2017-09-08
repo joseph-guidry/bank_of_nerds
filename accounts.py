@@ -40,6 +40,9 @@ class Checking(Account):
         self.name = "Checking_Acct  #"
         self.balance = start
 
+    def __str__(self):
+        return self.name + " " + str(balance)
+
     @property
     def name(self):
         """ The value of the checking account """
