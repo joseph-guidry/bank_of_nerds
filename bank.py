@@ -32,14 +32,15 @@ class Bank():
     def __init__(self):
         """ bank constructor """
         self.name = "Bank of Nerds"
-        self.customers = []
+        self.members = []
 
 
-    def add_customer(self, customer):
+    def add_member(self, customer):
         """ Add new customer to bank record of customers """
-        
-        self.customers.append(customer)
-
+        self.members.append(customer)
+    
+    def get_account(self, customer):
+        """ Get the list of accounts from a member """
     def add_account(self, customer, account):
         """ Create new account for customer """
         pass
@@ -53,7 +54,7 @@ class Bank():
         pass
 
 
-    def welcome(self):
+    def welcome(self):  # Move to I/O utility functions
         welcome_msg = "Welcome to Bank of Nerds"
         try:
             while True:
@@ -61,7 +62,7 @@ class Bank():
                 if option == "1":
                     print(option)
                     current_customer = self._get_customer()
-                    option_menu(current_customer)
+                    self.option_menu(current_customer)
                 elif option == "2":
                     exit()
                 else:
@@ -70,16 +71,17 @@ class Bank():
         except:
             pass
 
-    def _get_customer(self):
+    def _get_customer(self):  # Move to I/O utility functions
         try:
             first_name, last_name, age = self._get_info()
             current_customer = customer.Customer(first_name, last_name, int(age))
             print(current_customer)
-            if current_customer not in self.customers:
+            if current_customer not in self.members:
                 join = input("Would you like to become a member at our bank? ")
                 if join in Bank.yes:
                     print("add new account")
-                    self.add_customer(current_customer)
+                    self.add_member(current_customer)
+                    print("after getting customer")
                     return current_customer
                 else:
                     print("Sorry but we can't help unless you open an account")
@@ -93,7 +95,7 @@ class Bank():
             print("Input for age not a integer")
             return
 
-    def _get_info(self):
+    def _get_info(self):  # Move to I/O utility functions
         try:
             first_name = input("First Name: ")
             last_name = input("Last Name: ")
@@ -105,4 +107,34 @@ class Bank():
             print("Dont Do that")
             pass
         
-    
+    def option_menu(self, current_user):  # Move to I/O to utility functions
+        """ The menu for member customer options """
+        # menu_options = {"1":self.deposit_funds(), "2":self.withdraw_funds, "3":
+        print("inside option menu " + str(current_user))
+        while (self.print_menu(current_user.first_name)):
+            print(current_user)
+            print(current_user.accounts)
+            option = input("> ")
+
+    def print_menu(self, first_name):   # Move to bank utility functions
+        """ The menu output """
+        print("Welcome {},\nWhat can we help you with today? ".format(first_name))
+        print(" 1) Deposit Funds")
+        print(" 2) Withdraw Funds")
+        print(" 3) List Accounts ")
+        print(" 4) Create new account \n")
+
+        return True
+
+
+
+
+
+
+
+
+
+
+
+
+
