@@ -6,19 +6,21 @@ Module: bank.py
 Auther: Joseph Guidry
 Date  : 07/09/2017
 
-Description:  THis module contains the functions and class to operate the customer object.
+Description:  THis module contains the functions and class
+              to operate the customer object.
 
 ================== =================================================
     FUNCTION                            DESCRIPTION
 ================== =================================================
 
-Examples: 
+Examples:
 
 """
 import abc
 
+
 class Customer(metaclass=abc.ABCMeta):
-    """ 
+    """
     This is the customer interface
     """
 
@@ -52,9 +54,10 @@ class Customer(metaclass=abc.ABCMeta):
     def age(self, age):
         self._age = age
 
+
 class BankCustomer(Customer):
-    """ 
-    This is the customer interface
+    """
+    This is the customer interface for the bank_of_nerd application
     """
 
     def __init__(self, first_name, last_name, age):
@@ -70,7 +73,7 @@ class BankCustomer(Customer):
         return self.first_name == customer.first_name and \
                self.last_name == customer.last_name and \
                self.age == customer.age
-    
+
     @property
     def first_name(self):
         return self._first_name
