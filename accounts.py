@@ -121,8 +121,6 @@ class Money_Market(Account):
     def __str__(self):
         return self.name + " : " + str(self.balance)
 
-
     def _update_value(self, amount, change):
         """ Update the value of the account """
         return amount + change
-

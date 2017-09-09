@@ -6,24 +6,33 @@ Module: bank.py
 Auther: Joseph Guidry
 Date  : 07/09/2017
 
-Description:  THis module contains the functions and class to operate
+Description:  This module contains the functions and class to operate
               the bank object.
 
-================== =================================================
-    FUNCTION                            DESCRIPTION
-================== =================================================
-1.
-2.
-3.
-4.
+==================       =================================================
+    FUNCTION                           DESCRIPTION
+==================       =================================================
+1.  add_member           - add additional member to the banks list of members.
+2.  list_accounts        - display the accounts of member, return a dictionary.
+3.  add_account          - create new account, add to member list of accounts.
+4.  deposit_funds        - add funds to an existing account.
+5.  withdraw_funds       - remove funds from an existing account.
+6.  welcome              - display a welcome prompt for user to login.
+7.  option_menu          - display a list of options for user to do.
+8.  user_menu            - promput used by option_menu().
+9.  signed_in            - allows user to exit account, return to main menu.
+10. _check_age           - ensure age is within the boundaries implemented.
+11. _get_account         - private method to resolve the individual account.
+12. _get_customer        - private method to resolve customer account.
+13. _get_info            - private method to get user information for account.
 
 Examples:
 
 """
 import os
 from customer import BankCustomer
-from accounts import *
 from utility import AgeRequirementException
+from accounts import *
 
 
 class Bank():
@@ -45,7 +54,6 @@ class Bank():
 
     def list_accounts(self, customer):
         """ provide a out of the customers account summary """
-        # print("in list_accounts")
         numbers = [str(x + 1) for x in range(0, len(customer.accounts))]
         options = dict(zip(numbers, customer.accounts))
         fmt = "{} ) {} : ${:0.2f}"
@@ -78,12 +86,8 @@ class Bank():
                 print("[ No Accounts ]")
                 print("Consider creating a new account from the menu option")
             else:
-                options = self.list_accounts(customer)
-                selection = input("Select an account:\n> ")
-                account_name = options[selection]
-                # Convert the amount into  a integer value!!!!
+                account = self._get_account(customer)
                 amount = input("Deposit Amount: ")
-                account = customer.accounts[account_name]
                 account.make_deposit(float(amount) * 100)
         except ValueError as ex:
             print("Error: ", ex)
@@ -95,14 +99,11 @@ class Bank():
                 print("[ No Accounts ]")
                 print("Consider creating a new account from the menu option")
             else:
-                options = self.list_accounts(customer)
-                selection = input("Select an account:\n> ")
-                account_name = options[selection]
+                account = self._get_account(customer)
                 amount = input("Withdraw Amount: ")
-                account = customer.accounts[account_name]
                 # Check to ensure customer is 67 prior to 401k withdraw
                 if isinstance(account, Retirement_401k) and \
-                   self._check_age_requirement(customer.age):
+                   self._check_age(customer.age):
                     raise AgeRequirementException
 
                 account.make_withdraw(float(amount) * 100)
@@ -110,6 +111,7 @@ class Bank():
             print("Error: ", ex)
         except NonSufficentFundsException:
             print("Executing Overdraft Protection...")
+            # Directly removes $35 from the account
             account.balance -= 3500
 
     def welcome(self):  # TO DO Move to utility functions
@@ -129,8 +131,56 @@ class Bank():
             except ValueError:
                 print("Input for age not a integer")
             except Exception as ex:
-                # print(ex)
                 pass
+
+    def option_menu(self, current_user):  # TO DO Move to utility functions
+        """ The menu for member customer options """
+
+        options = {"1": self.deposit_funds, "2": self.withdraw_funds,
+                   "3": self.list_accounts, "4": self.add_account,
+                   "5": self.signed_in}
+
+        x = True
+        while self.signed_in(x):
+            self.user_menu(current_user.first_name)
+            selection = input("> ")
+            if selection == "5":
+                x = options[selection](False)
+            else:
+                try:
+                    options[selection](current_user)
+                    input("Press any key to continue...")
+                except AgeRequirementException:
+                    print("Customer does not meet minimum age requirement")
+                    print("Must be 67 years old to withdraw from 401k account")
+                    input("Press any key to continue...")
+                except KeyError as ex:
+                    print("Please enter a valid option number", ex)
+
+    def user_menu(self, first_name):   # TO DO Move to utility functions
+        """ The menu output """
+        os.system("clear" if os.name == "posix" else "cls")
+        print("Welcome {},".format(first_name))
+        print("What can we help you with today? ")
+        print(" 1) Deposit Funds")
+        print(" 2) Withdraw Funds")
+        print(" 3) List Accounts ")
+        print(" 4) Create new account")
+        print(" 5) Sign out\n")
+
+    def signed_in(self, option):
+        """ change value to logout of the customers menu """
+        return option
+
+    def _check_age(self, customer_age):
+        return customer_age < 67  # 67 is the minimum age to withdraw from 401k
+
+    def _get_account(self, customer):
+        """ Return the account selected """
+        options = self.list_accounts(customer)
+        selection = input("Select an account:\n> ")
+        account_name = options[selection]
+        return customer.accounts[account_name]
 
     def _get_customer(self):  # TO DO Move to utility functions
         """ Return the customer object found in member list or created new """
@@ -141,7 +191,7 @@ class Bank():
             input("Already in there")
             return nerd
         else:
-            string = ("You appear to be logging in for the first time...\n" \
+            string = ("You appear to be logging in for the first time...\n"
                       "Would you like to become a member at our bank?")
 
             join = input(string) or "y"
@@ -163,49 +213,3 @@ class Bank():
         except KeyboardInterrupt:
             print("Dont Do that")
             pass
-
-    def option_menu(self, current_user):  # TO DO Move to utility functions
-        """ The menu for member customer options """
-
-        # print("inside option menu " + str(current_user))
-        options = {"1": self.deposit_funds, "2": self.withdraw_funds,
-                   "3": self.list_accounts, "4": self.add_account,
-                   "5": self.signed_in}
-
-        x = True
-        while self.signed_in(x):
-            self.print_menu(current_user.first_name)
-            # print(current_user)
-            # print(current_user.accounts)
-            selection = input("> ")
-            if selection == "5":
-                x = options[selection](False)
-            else:
-                try:
-                    # print(selection)
-                    options[selection](current_user)
-                    input("Press any key to continue...")
-                except AgeRequirementException:
-                    print("Customer does not meet minimum age requirement")
-                    print("Must be 67 years old to withdraw from 401k account")
-                    input("Press any key to continue...")
-                except KeyError as ex:
-                    print("Please enter a valid option number", ex)
-
-    def print_menu(self, first_name):   # Move to bank utility functions
-        """ The menu output """
-        os.system("clear" if os.name == "posix" else "cls")
-        print("Welcome {},".format(first_name))
-        print("What can we help you with today? ")
-        print(" 1) Deposit Funds")
-        print(" 2) Withdraw Funds")
-        print(" 3) List Accounts ")
-        print(" 4) Create new account")
-        print(" 5) Sign out\n")
-
-    def signed_in(self, option):
-        """ change value to logout of the customers menu """
-        return option
-
-    def _check_age_requirement(self, customer_age):
-        return customer_age < 67  # 67 is the minimum age to withdraw from 401k
