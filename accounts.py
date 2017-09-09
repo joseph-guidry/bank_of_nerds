@@ -11,12 +11,10 @@ Description: The API for an account.
 ================== =================================================
     FUNCTION                            DESCRIPTION
 ================== =================================================
-1.
-2.
-3.
-4.
+1. make_deposit     - account method to increase the account balance.
+2. make_withdraw    - account method to decrease the account balance.
+3. _update_value    - abstract method required to be a subclass.
 
-Examples:
 
 """
 

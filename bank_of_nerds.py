@@ -6,8 +6,8 @@ Module: bank.py
 Auther: Joseph Guidry
 Date  : 07/09/2017
 
-Description:  THis module contains the functions and class to operate
-              the customer object.
+Description:  THis module contains the functions and class to run
+              the bank_of_nerds application.
 
 """
 from bank import *
