@@ -3,7 +3,7 @@
 
 """
 Module: accounts.py
-Auther: Joseph Guidry
+Author: Joseph Guidry
 Date  : 09-06-2017
 
 Description: The API for an account.
@@ -40,7 +40,7 @@ class Account(metaclass=abc.ABCMeta):
     @name.setter
     def name(self, name):
         self._name = name + str(self.account_id)
-        Checking.account_id += 1
+        self.account_id += 1
 
     @property
     def balance(self):
@@ -98,7 +98,7 @@ class Retirement_401k(Account):
     account_id = 14000
 
     def __init__(self, start=0):
-        """ create iniital account with a zero balance """
+        """ create 401k account with a zero balance """
         self.name = "401k Acct #"
         self.balance = start
 

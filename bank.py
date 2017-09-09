@@ -3,7 +3,7 @@
 
 """
 Module: bank.py
-Auther: Joseph Guidry
+Author: Joseph Guidry
 Date  : 07/09/2017
 
 Description:  This module contains the functions and class to operate
@@ -19,7 +19,7 @@ Description:  This module contains the functions and class to operate
 5.  withdraw_funds       - remove funds from an existing account.
 6.  welcome              - display a welcome prompt for user to login.
 7.  option_menu          - display a list of options for user to do.
-8.  user_menu            - promput used by option_menu().
+8.  user_menu            - prompt used by option_menu().
 9.  signed_in            - allows user to exit account, return to main menu.
 10. _check_age           - ensure age is within the boundaries implemented.
 11. _get_account         - private method to resolve the individual account.
@@ -211,5 +211,5 @@ class Bank():
             return first_name, last_name, age
 
         except KeyboardInterrupt:
-            print("Dont Do that")
+            print("Don't Do that")
             pass
