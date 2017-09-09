@@ -1,0 +1,92 @@
+Name: Guidry, Joseph
+Date: 09 SEPT 2017
+Current Module: Object Oriented Programming with Python
+Project Name:  Bank of Nerds
+
+Project Goals:
+	<A two to three sentence description of the project and its intent>
+     
+	- The goal of this project is to incorporate the use of object oriented programming to create a bank interaction with
+      with a customer.  The interactions included the use of classes and methods to interact with other classes and their 
+      attributes. 
+	
+Considerations:
+	<A bulleted list of considerations and conditions which affected the design of your project>
+    - Implementing objects that describe real items.
+    - Apply the DRY principle
+    - Allow the user to create multiple accounts that do not cross into each other.
+    - Separate the customer from others.
+    - Build a User Interaction that is helpful and easy to navigate
+
+
+Initial Design:
+	<A paragraph or more that adequately describes your program's structure and layout discussing the various modules (.c and corresponding .h files) that you implemented>
+	
+	This program is composed of a couple python files:
+    
+    bank_of_nerds.py: This file runs its main function and creates Bank object and the welcome menu.
+    
+    In the dungeon packet, there are four modules:
+        bank.py       : This file provides the code to generate the bank, in this program it holds most of the methods for the
+                        running of the program. This made sense that a bank handles most of the actions itself.
+        customer.py   : This file provides the code to generate customers and holds the accounts it adds in the bank object.
+        accounts.py   : This file provides the code for creating a account object, that can be used by all account class.
+        utility.py     : This file provides utility code for custom exceptions, certain bank methods involving I/O should 
+                        make it into this file
+
+Data Flow:
+	<A paragraph or longer describing the data flow of the program in a sequential manner.  Include a diagram when necessary.>
+	
+	1. The user begins the program and is prompted to login or exit.
+	2. If exit is selected, then program exits. Else, the user is prompted to provide information which is used to check the
+       banks account attribute for a match.  If there is no match, user is asked to join the bank.
+	3. Once user becomes a member of the bank, they are prompted with the list of options to continue.
+	4. Selected option invokes function that can either deposit funds, withdraw funds, list accounts, or add new accounts.
+       If there are no accounts, adding a new account is suggested.
+	5. Deposit and Withdraw prompt user to select from a list of available accounts. 
+       - Then an amount is prompted.
+       - Overdraft protection is enabled if there are not enough funds to process withdraw.
+	6. The user can continue to add accounts, and make deposits and withdraws, until user logs out.
+	7. Logging out returns user to login prompt, saving the customer and accounts into the bank object.
+    8. If time had permitted, I would like to implement pickling the bank to store long term. 
+
+Communication Protocol:
+	<Discuss any custom communication protocol you have used including the various request and responses that may be sent and received.>
+
+	There was no use of custom communication protocols used in this program.
+	
+Potential Pitfalls:
+	<Discuss any potential issues that you might run into while creating the project>
+	
+	1. Adding all functionality into a method of a class.
+	2. DRY principle for code reuse.
+    3. Planning the use of inheritance and how classes and objects interact.
+	
+Test Plan:
+	User Test:
+ 		<Describe the steps taken for each user test.>
+ 		1. Test for individual class creation was done with TDD. 
+ 		2. Attempt to add accounts to customers, then customers to the bank.
+        3. Test menu prompt logic, and validate input data.
+        5. Add flourish to implement overdraft protection.
+ 		
+	Test Cases:
+		<A brief overview of the test cases that you implemented.>
+		1. Attempt to Ctrl + C from anywhere in the program.
+		2. Handle different input from user, and menu stages.
+		3. Ensure proper execution of classes using TDD.  
+		4. Trial and Error on making any possible selection at any time.
+		
+		
+Conclusion:
+
+	<A review of the project, what worked, what didn’t and how to improve upon your project in the future.>
+
+	In this project, the return to using PEP8 and python are the most challenging part of this project. 
+    Once returning to a level of understanding the creation of classes and how those classes are built was the next challenge.
+    Through the use of Test Driven Development, the build and use of class attribute and methods help lay the foundation for this
+    project.  Afterward, TDD was abandoned to test how the program came together. Further work with TDD is needed.  
+    The overall picture of the project was enjoyable to develop.
+
+
+
