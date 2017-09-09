@@ -19,7 +19,10 @@ Description:  THis module contains the functions and class to operate the bank o
 Examples: 
 
 """
+import os
 from customer import BankCustomer
+from accounts import *
+from utility import AgeRequirementException
 
 class Bank():
     """ 
@@ -42,36 +45,87 @@ class Bank():
     def list_accounts(self, customer):
         """ provide a out of the customers account summary """
         print("in list_accounts")
+        numbers = [str(x + 1) for x in range(0, len(customer.accounts))]
+        options = dict(zip(numbers, customer.accounts))
+        fmt = "{} ) {} : ${:0.2f}"
         if len(customer.accounts) == 0:
-            print(" [ No Accounts ] \Consider creating a new account from the menu option")
+            print("[ No Accounts ]")
+            print("Consider creating a new account from the menu option")
         else:
-            for account in customer.accounts:
-                print(account)
+            for number, account in enumerate(customer.accounts):
+                balance = customer.accounts[account].balance
+                print(fmt.format(str(number + 1), account, balance/100))
+           
+        return options   
     
     def add_account(self, customer):
         """ Create new account for customer """
         print("in add_accounts")
-        # customer.accounts[account.name] = account.balance
+        fmt = "{} ) {}"
+        account_types = {"1":Saving, "2":Checking,
+                         "3":Retirement_401k , "4":Money_Market}
+        for x in range(1, 5):
+            print(fmt.format(x, str(account_types[str(x)].__name__)))
+        selection = input("> ")
+        print(selection)
+        account = account_types[selection]()
+        print(type(account))
+        customer.accounts[account.name] = account
+        print(customer.accounts)
 
     def deposit_funds(self, customer):
         """ Add funds to a customers account """
-        print("deposit funds")
-
+        try:
+            print("deposit funds")
+            if len(customer.accounts) == 0:
+                print("[ No Accounts ]")
+                print("Consider creating a new account from the menu option")
+                
+            else:
+                options = self.list_accounts(customer)
+                print(options)
+                selection = input("> ")
+                account_name = options[selection]
+                print(type(account_name))
+                # Convert the amount into  a integer value!!!!
+                amount = input("Deposit Amount: ")
+                account = customer.accounts[account_name]
+                account.make_deposit(float(amount) * 100)
+                print(account.balance)
+        except ValueError as ex:
+            print("Error: ", ex)
+        
     def withdraw_funds(self, customer):
         """ Remove funds from a customers account """
-        print("withdraw funds")
         try:
-            pass
-            # account.make_withdraw(amount)
+            print("withdraw funds")
+            if len(customer.accounts) == 0:
+                print("[ No Accounts ]")
+                print("Consider creating a new account from the menu option")
+            else:
+                options = self.list_accounts(customer)
+                print(options)
+                selection = input("> ")
+                account_name = options[selection]
+                print(type(account_name))
+                amount = input("Withdraw Amount: ")
+                account = customer.accounts[account_name]
+                print(float(amount) * 100)
+                print(customer.age)
+                if isinstance(account, Retirement_401k) and self._check_age_requirement(customer.age):
+                    raise AgeRequirementException
+                account.make_withdraw(float(amount) * 100)
+                print(account.balance)
+        except ValueError as ex:
+            print("Error: ", ex)
         except NonSufficentFundsException:
             print("Executing Overdraft Protection...")
 
-    
-
     def welcome(self):  # Move to I/O utility functions
         welcome_msg = "Welcome to Bank of Nerds"
-        try:
-            while True:
+        while True:
+            try:
+                print(self.members)
                 option = input("1 )\tSign in\n2 )\tExit\n> ")
                 if option == "1":
                     print(option)
@@ -84,29 +138,31 @@ class Bank():
                 else:
                     print(self.customers)
                     print("Invalid Option")
-        except:
-            pass
+            except ValueError:
+                print("Input for age not a integer")
+            except Exception as ex:
+                print(ex)
+                pass
 
     def _get_customer(self):  # Move to I/O utility functions
-        try:
-            first_name, last_name, age = self._get_info()
-            current_customer = BankCustomer(first_name, last_name, int(age))
-            print(current_customer)
-            if current_customer not in self.members:
-                join = input("Would you like to become a member at our bank? ") or "y"
-                if join in Bank.yes:
-                    print("add new account")
-                    self.add_member(current_customer)
-                    return current_customer
-                else:
-                    print("Sorry but we can't help unless you open an account")
-                    exit()
-            else:
-                print("Already in there")
+        first_name, last_name, age = self._get_info()
+        current_customer = BankCustomer(first_name, last_name, int(age))
+        print(current_customer)
+        nerd = next( (x for x in self.members if x == current_customer), None)
+        print(nerd)
+        if nerd != None:
+            input("Already in there")
+            return nerd
+        else:
+            join = input("Would you like to become a member at our bank? ") or "y"
+            if join in Bank.yes:
+                print("add new account")
+                self.add_member(current_customer)
                 return current_customer
-        except ValueError:
-            print("Input for age not a integer")
-            return
+            else:
+                print("Sorry but we can't help unless you open an account")
+                exit()
+        
 
     def _get_info(self):  # Move to I/O utility functions
         try:
@@ -141,12 +197,17 @@ class Bank():
                     print(selection)
                     options[selection](current_user)
                     input("Press any key to continue...")
-                except Exception as ex:
+                except AgeRequirementException:
+                    print("Customer does not meet minimum age requirement")
+                    print("Must be 67 years old to withdraw from 401k account")
+                    input("Press any key to continue...")
+                except KeyError as ex:
                     print("Please enter a valid option number", ex)
 
 
     def print_menu(self, first_name):   # Move to bank utility functions
         """ The menu output """
+        os.system("clear" if os.name == "posix" else "cls")
         print("Welcome {},\nWhat can we help you with today? ".format(first_name))
         print(" 1) Deposit Funds")
         print(" 2) Withdraw Funds")
@@ -158,7 +219,8 @@ class Bank():
         """ change value to logout of the customers menu """
         return option
 
-
+    def _check_age_requirement(self, customer_age):
+        return customer_age < 67  # 67 is the minimum age to withdraw from 401k
 
 
 

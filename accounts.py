@@ -33,7 +33,7 @@ class Account(metaclass=abc.ABCMeta):
 class Checking(Account):
     """ this acts as the standard checking account """
 
-    account_id = 8000
+    account_id = 10000
 
     def __init__(self, start=0):
         """ Creating a checking account """
@@ -41,7 +41,7 @@ class Checking(Account):
         self.balance = start
 
     def __str__(self):
-        return self.name + " " + str(balance)
+        return self.name + " : " + str(self.balance)
 
     @property
     def name(self):
@@ -51,7 +51,7 @@ class Checking(Account):
     @name.setter
     def name(self, name):
         self._name = name + str(self.account_id)
-        self.account_id += 1
+        Checking.account_id +=  1
 
     @property
     def balance(self):
@@ -72,7 +72,7 @@ class Checking(Account):
 
     def make_withdraw(self, amount):
         """ Take portion of checking account """
-        if self.balance > amount:
+        if self.balance >= amount:
             self._balance = self._update_value(self._balance, (amount * -1))
         else:
             pass
@@ -82,12 +82,15 @@ class Checking(Account):
 class Saving(Account):
     """ this acts as a savings account """
 
-    account_id = 8000
+    account_id = 12000
     
     def __init__(self, start=0):
         """ Creating a checking account """
-        self.name = "Saving #"
+        self.name = "Saving_Acct #"
         self.balance = start
+
+    def __str__(self):
+        return self.name + " : " + str(self.balance)
 
     @property
     def name(self):
@@ -97,7 +100,99 @@ class Saving(Account):
     @name.setter
     def name(self, name):
         self._name = name + str(self.account_id)
-        self.account_id += 1
+        Saving.account_id +=  1
+
+    @property
+    def balance(self):
+        """ The value of the checking account """
+        return self._balance
+
+    @balance.setter
+    def balance(self, start):
+        self._balance = start
+
+    def _update_value(self, amount, change):
+        """ Update the value of the account """
+        return amount + change
+
+    def make_deposit(self, amount):
+        """ Add value to a checking account """
+        self._balance = self._update_value(self._balance, amount)
+
+    def make_withdraw(self, amount):
+        """ Take portion of checking account """
+        if self._balance >= amount:
+            self._balance = self._update_value(self._balance, (amount * -1))
+        # raise InsufficentFundsException
+
+
+class Retirement_401k(Account):
+    """ The 401K account for retirement savings """
+
+    account_id = 14000
+
+    def __init__(self, start=0):
+        """ create iniital account with a zero balance """
+        self.name = "401k Acct #"
+        self.balance = start
+
+    def __str__(self):
+        return self.name + " : " + str(self.balance)
+
+    @property
+    def name(self):
+        """ The value of the checking account """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name + str(self.account_id)
+        Saving.account_id +=  1
+
+    @property
+    def balance(self):
+        """ The value of the checking account """
+        return self._balance
+
+    @balance.setter
+    def balance(self, start):
+        self._balance = start
+
+    def _update_value(self, amount, change):
+        """ Update the value of the account """
+        return amount + change
+
+    def make_deposit(self, amount):
+        """ Add value to a checking account """
+        self._balance = self._update_value(self._balance, amount)
+
+    def make_withdraw(self, amount):
+        """ Take portion of checking account """
+        if self._balance >= amount:
+            self._balance = self._update_value(self._balance, (amount * -1))
+        # raise InsufficentFundsException
+
+class Money_Market(Account):
+    """ The Money Market account for investment funds """
+    account_id = 16000
+
+    def __init__(self, start=0):
+        """ create iniital account with a zero balance """
+        self.name = "Money_Market_Acct #"
+        self.balance = start
+
+    def __str__(self):
+        return self.name + " : " + str(self.balance)
+
+    @property
+    def name(self):
+        """ The value of the checking account """
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name + str(self.account_id)
+        Saving.account_id +=  1
 
     @property
     def balance(self):
@@ -119,35 +214,8 @@ class Saving(Account):
     def make_withdraw(self, amount):
         """ Take portion of checking account """
         if self._balance > amount:
-            self._balance = self.update_value(self._balance, amount)
+            self._balance = self._update_value(self._balance, (amount * -1))
         # raise InsufficentFundsException
 
-
-class FourOhOneKay(Account):
-    """ The 401K account for retirement savings """
-
-    def __init__(self, start=0):
-        """ create iniital account with a zero balance """
-        self.name = ""
-        self.balance = start
-
-    # SHOULD THIS BE DONE BY THE BANK????
-    def _check_age_requirement(self, customer_age):
-        return customer_age >= 67  # 67 is the minimum age to withdraw from 401k
-
-
-    def _update_value(self, amount, change):
-        """ Update the value of the account """
-        return amount + change
-
-    def make_deposit(self, amount):
-        """ Add value to a checking account """
-        self._balance = self._update_value(self._balance, amount)
-
-    def make_withdraw(self, amount):
-        """ Take portion of checking account """
-        if self._balance > amount:
-            self._balance = self.update_value(self._balance, amount)
-        # raise InsufficentFundsException
 
     

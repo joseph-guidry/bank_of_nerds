@@ -22,3 +22,7 @@ Examples:
 
 class NonSufficentFundsException(Exception):
     pass
+
+
+class AgeRequirementException(Exception):
+    pass
