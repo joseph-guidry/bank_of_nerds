@@ -37,7 +37,7 @@ Initial Design:
 Data Flow:
 	<A paragraph or longer describing the data flow of the program in a sequential manner.  Include a diagram when necessary.>
 	
-	1. The user begins the program and is prompted to login or exit.
+	1. The user begins the program and is prompted to ;abcdefgijmrst-login or exit.
 	2. If exit is selected, then program exits. Else, the user is prompted to provide information which is used to check the
        banks account attribute for a match.  If there is no match, user is asked to join the bank.
 	3. Once user becomes a member of the bank, they are prompted with the list of options to continue.
@@ -82,11 +82,11 @@ Conclusion:
 
 	<A review of the project, what worked, what didn’t and how to improve upon your project in the future.>
 
-	In this project, the return to using PEP8 and python are the most challenging part of this project. 
-    Once returning to a level of understanding the creation of classes and how those classes are built was the next challenge.
-    Through the use of Test Driven Development, the build and use of class attribute and methods help lay the foundation for this
-    project.  Afterward, TDD was abandoned to test how the program came together. Further work with TDD is needed.  
-    The overall picture of the project was enjoyable to develop.
+	In this project, the return to using new concepts, including abstract base class and inheritance, and python are the most
+    challenging part of this project. Once returning to a level of understanding the creation of classes and how those classes 
+    are built was the next challenge. Through the use of Test Driven Development, the build and use of class attribute and methods
+    help lay the foundation for this project.  Afterward, TDD was abandoned to test how the program came together. 
+    Further work with TDD is needed. The overall picture of the project was enjoyable to develop.
 
 
 

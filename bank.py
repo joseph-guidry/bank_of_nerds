@@ -173,6 +173,7 @@ class Bank():
         return option
 
     def _check_age(self, customer_age):
+        """ Return bool value based on check on minimum age """
         return customer_age < 67  # 67 is the minimum age to withdraw from 401k
 
     def _get_account(self, customer):
@@ -192,7 +193,7 @@ class Bank():
             return nerd
         else:
             string = ("You appear to be logging in for the first time...\n"
-                      "Would you like to become a member at our bank?")
+                      "Would you like to become a member at our bank?  ")
 
             join = input(string) or "y"
             if join in Bank.yes:
